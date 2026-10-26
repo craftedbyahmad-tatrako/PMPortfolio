@@ -1,0 +1,52 @@
+/* Animations for the portfolio. Only transform and opacity are animated.
+   Everything is switched off when the visitor prefers reduced motion. */
+:root{--ease:cubic-bezier(.2,.8,.2,1)}
+html{scroll-padding-top:90px}
+/* sticky nav that hides on scroll down */
+.site-nav{position:sticky;top:0;z-index:50;background:#F6F1E7!important;transition:transform .35s var(--ease)}
+.site-nav.hide{transform:translateY(-100%)}
+/* scroll progress */
+.progress{position:fixed;left:0;top:0;height:4px;width:100%;background:#FFC929;border-bottom:2px solid #151515;transform-origin:0 50%;transform:scaleX(0);z-index:60;pointer-events:none}
+/* reveal on scroll */
+.js:not(.reduce) [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:var(--d,0ms)}
+.js:not(.reduce) [data-reveal].is-in{opacity:1;transform:none}
+/* hover and press */
+.fx{--s:6px;--tx:0px;--ty:0px;--mx:0px;--my:0px;--rx:0deg;--ry:0deg;transition:transform .25s var(--ease),box-shadow .25s var(--ease);transform:perspective(900px) translate(calc(var(--tx) + var(--mx)),calc(var(--ty) + var(--my))) rotateX(var(--rx)) rotateY(var(--ry));will-change:transform}
+.fx:hover{--tx:-3px;--ty:-3px;box-shadow:calc(var(--s) + 4px) calc(var(--s) + 4px) 0 #151515!important}
+.fx:active{--tx:2px;--ty:2px;box-shadow:calc(var(--s) - 3px) calc(var(--s) - 3px) 0 #151515!important}
+a.fx:hover{text-decoration:none}
+.reduce .fx{transition:none;transform:none}
+/* nav underline */
+.site-nav a:not(.btn){background:linear-gradient(#FFC929,#FFC929) 0 100%/0 3px no-repeat;transition:background-size .3s var(--ease)}
+.site-nav a:not(.btn):hover{background-size:100% 3px;text-decoration:none}
+/* keyword marquee */
+.ticker{display:block!important;overflow:hidden;white-space:nowrap}
+.ticker .track{display:flex;width:max-content;animation:marq 45s linear infinite}
+.ticker:hover .track{animation-play-state:paused}
+.ticker .seg{display:flex;align-items:center;gap:28px;padding-right:28px}
+.ticker .seg span{white-space:nowrap}
+@keyframes marq{to{transform:translateX(-50%)}}
+.reduce .ticker .track{animation:none}
+.reduce .ticker{overflow:auto}
+/* custom cursor (desktop mouse only) */
+.cursor{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;opacity:0;transition:opacity .2s}
+.cursor i{display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin:-22px 0 0 -22px;background:#FFC929;border:4px solid #151515;transform:scale(.32);transition:transform .3s var(--ease);font:800 13px 'Archivo',sans-serif;font-style:normal;color:#151515}
+.cursor span{opacity:0;transition:opacity .2s}
+.cursor.link i{transform:scale(.72)}
+.cursor.view i{transform:scale(1.35)}
+.cursor.view span{opacity:1}
+.cursor.hide{opacity:0!important}
+/* chart and diagram drawing */
+.js:not(.reduce) svg[data-mode] .sv{opacity:0;transition:opacity .5s ease,transform .7s var(--ease);transition-delay:calc(var(--i)*20ms);transform-box:fill-box}
+.js:not(.reduce) svg[data-mode="x"] rect.sv{transform:scaleX(0);transform-origin:left center}
+.js:not(.reduce) svg[data-mode="y"] rect.sv{transform:scaleY(0);transform-origin:center bottom}
+.js:not(.reduce) svg.is-in .sv{opacity:1;transform:none}
+/* page transitions between pages (supported browsers) */
+@media (prefers-reduced-motion:no-preference){
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vt-out .22s ease both}
+::view-transition-new(root){animation:vt-in .4s var(--ease) both}
+@keyframes vt-out{to{opacity:0;transform:translateY(-8px)}}
+@keyframes vt-in{from{opacity:0;transform:translateY(12px)}}
+}
+@media (hover:none){.cursor{display:none}}
