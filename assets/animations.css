@@ -69,3 +69,11 @@ img[alt*="Sedik"]{will-change:transform}
 @keyframes vt-out{to{opacity:0;transform:translateY(-8px)}}
 @keyframes vt-in{from{opacity:0;transform:translateY(12px)}}
 }
+
+/* whole project card is clickable: the 'View case study' link stretches over the card */
+.stretch::after{content:"";position:absolute;inset:0;z-index:2}
+.stretch:focus-visible{outline:none}
+.stretch:focus-visible::after{outline:3px solid #151515;outline-offset:4px}
+/* magnetic buttons that are not cards (e.g. the nav Contact button) */
+.mag{transform:translate(var(--mx,0px),var(--my,0px));transition:transform .25s var(--ease)}
+.reduce .mag{transform:none}

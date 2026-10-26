@@ -191,7 +191,11 @@
     $('a[style*="box-shadow"]').forEach(a => fx.add(a));
     $('a').filter(a => /View case study/.test(a.textContent)).forEach(a => {
       const card = a.closest('div[style*="box-shadow"]');
-      if (card) { card.setAttribute('data-card', ''); fx.add(card); }
+      if (card) {
+        card.setAttribute('data-card', ''); fx.add(card);
+        card.style.position = 'relative';
+        a.classList.add('stretch');
+      }
     });
     fx.forEach(el => { el.classList.add('fx'); el.style.setProperty('--s', shadowSize(el) + 'px'); });
     if (!reduce) $('a.fx').forEach(a => {
@@ -222,7 +226,8 @@
     c.innerHTML = '<i><span>View</span></i>';
     document.body.appendChild(c);
     const photo = heroImg && heroImg.parentElement;
-    const magnets = $('a').filter(a => /^(Contact me|Email me)$/.test(a.textContent.trim()));
+    const magnets = $('a').filter(a => /^(Contact me|Email me|Contact)$/.test(a.textContent.trim()));
+    magnets.forEach(b => { if (!b.classList.contains('fx')) b.classList.add('mag'); });
     let mx = -100, my = -100, cx = -100, cy = -100, nx = 0, ny = 0, px = 0, py = 0, raf = 0;
     const tick = () => {
       cx += (mx - cx) * 0.2; cy += (my - cy) * 0.2;
@@ -241,8 +246,9 @@
       const link = t.closest && t.closest('a,button');
       const card = t.closest && t.closest('[data-card]');
       c.classList.toggle('hide', !!input);
-      c.classList.toggle('link', !!link);
-      c.classList.toggle('view', !!card && !link);
+      const onCard = !!card && (!link || link.classList.contains('stretch'));
+      c.classList.toggle('link', !!link && !onCard);
+      c.classList.toggle('view', onCard);
       magnets.forEach(b => {
         const r = b.getBoundingClientRect(), bx = r.left + r.width / 2, by = r.top + r.height / 2;
         const near = e.clientX > r.left - 80 && e.clientX < r.right + 80 && e.clientY > r.top - 80 && e.clientY < r.bottom + 80;
