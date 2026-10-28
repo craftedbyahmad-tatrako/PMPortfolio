@@ -37,7 +37,7 @@
     nav.classList.add('site-nav');
     $('a', nav).forEach(a => {
       const st = a.getAttribute('style') || '';
-      if (st.includes('background:#151515') || st.includes('padding:6px 12px')) a.classList.add('btn');
+      if (/padding:\s*10px 18px/.test(st) || st.includes('padding:6px 12px')) a.classList.add('btn');
     });
   }
   const heroImg = document.querySelector('img[alt*="Sedik"]');
